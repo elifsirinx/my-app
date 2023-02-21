@@ -26,16 +26,22 @@ Hangi property de hangi tipi kullandığımızı componentte belirtmek için kul
 */
 
 import PropTypes from "prop-types";
-function User({ propName, propSurname, propAge, isLoggedIn, friends }) {
+function User({
+  propName,
+  propSurname,
+  propAge,
+  isLoggedIn,
+  friends,
+  address,
+}) {
+  //Eğer giriş yapılmadıysa aşağıdaki gibi early return yaparak bilgileri göstermeyiz.
+  if (!isLoggedIn) {
+    return <h1>You must login!</h1>;
+  }
   return (
     <>
       {/* Birden fazla etiket için fragment etiketine almalıyız.*/}
-      <h1>
-        {isLoggedIn
-          ? `${propName} ${propSurname} (${propAge})`
-          : "Your couldn't Login!"}
-      </h1>
-
+      <h1>{`${propName} ${propSurname} (${propAge})`}</h1>
       {/*ERROR: Each child in list should have a unique "key" prop
         {friends.map((friend) => (
         <div>{friend}</div>
@@ -46,22 +52,38 @@ function User({ propName, propSurname, propAge, isLoggedIn, friends }) {
       {friends.map((friend, index) => (
         <div key={friend.id}>{`${index} - ${friend.name}`}</div>
       ))}
-
       {/* RETURN: Map fonksiyonun içinde farklı işlemler de yapacaksak return kullanmalıyız.*/}
       {friends.map((friend, index) => {
         const x = friend.id + 2;
 
         return <div key={friend.id}>{`${x} - ${friend.name}`}</div>;
       })}
+      <br></br>
+      {/* SHAPE: Address attribute kısmı "shape" tanımını kullanamak için obje verilirmiştir. */}
+      {address.title} {address.zip}
     </>
   );
 }
 //Bu şekilde prop tiplerini belirtebiliriz.
+//Eğer zorunlu alanları belirtmek istersek "isRequired" tanımını kullanırız.
+//Bir propertYde birden fazla veri tipinin gönderilmesi için de "oneOfType" tanımını kullanırız.
+//Mesela age attribute kısmını hem string hem de number kabul etmek için aşağıdaki gibi düzeleyebiliriz.
+
 User.propTypes = {
-  propName: PropTypes.string,
-  propSurname: PropTypes.string,
-  isLoggedIn: PropTypes.bool,
-  age: PropTypes.number,
+  propName: PropTypes.string.isRequired,
+  propSurname: PropTypes.string.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  propAge: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   friends: PropTypes.array,
+  address: PropTypes.shape({
+    title: PropTypes.string,
+    zip: PropTypes.number,
+  }),
+};
+
+//Eğer verilen prop kısmına herhangi bir değer set edilmemişse default olarak değer verilmesi için kullanırız.
+//Örneğin: isLoggedIn gönderilmemişse bu prop kısmına varsayılan "false" şeklinde default değer set edebiliriz.
+User.defaultProps = {
+  isLoggedIn: false,
 };
 export default User;

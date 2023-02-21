@@ -51,6 +51,27 @@ Componentlere gönderdiğimiz propertylerin tiplerini belirleyebileceğimiz prop
 Bunu nasıl kullanacağımızı öğreneceğiz.
 */
 
+/*
+-------PROPS TYPES: isRequired 
+Eğer zorunlu alanları belirtmek istersek "isRequired" tanımını kullanırız.
+*/
+
+/*
+-------PROPS TYPES: oneOfType 
+Bir property de birden fazla veri tipinin gönderilmesi için de "oneOfType" tanımını kullanırız.
+*/
+
+/*
+-------PROPS TYPES: shape 
+Obje olarak gönderilen property kullanabileceğimiz "shape" adında bir tanım vardır.
+Mesela: Aşağıda "Adres" diye bir obje vererek örneklendirdik.
+*/
+
+/*
+-------default PROPS 
+Eğer verilen prop kısmına herhangi bir değer set edilmemişse default olarak değer verilmesi için kullanırız.
+*/
+
 const friends = [
   { id: 1, name: "Merve" },
   { id: 2, name: "Can" },
@@ -77,8 +98,12 @@ function App() {
         propName="Elif"
         propSurname="Sirin"
         propAge={25}
-        isLoggedIn={true}
+        //isLoggedIn={true}
         friends={friends}
+        address={{
+          title: "Ataşehir/Istanbul",
+          zip: 34755,
+        }}
       />
     </div>
   );
